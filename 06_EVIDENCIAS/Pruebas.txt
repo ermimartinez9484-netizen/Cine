@@ -1,0 +1,109 @@
+PRUEBAS EJECUTADAS · RESERVACIONES DE CINE VARIANTE B
+
+Entorno de prueba: CMake 3.31.10, GCC 14.2.0 y Linux. Código de la entrega en C++17.
+Cada número o texto de la entrada se envió en su propia línea. Los casos que
+comparten carpeta lo indican. Se omiten los menús repetidos de los fragmentos.
+
+P01 · Reservar en ambos sectores y consultar disponibilidad y mapa
+Entrada: 1, 8, 1, 9, 1, 20, 4, 1, 2, 0, 0
+  Butaca 8 reservada. Sector VIP. Cobro Q50.
+  Butaca 9 reservada. Sector General. Cobro Q35.
+  Butaca 20 reservada. Sector General. Cobro Q35.
+  VIP (Q50): 7 libres de 8
+  General (Q35): 10 libres de 12
+  Ocupadas: 3 de 20
+  Ingresos totales: Q120
+Resultado: correcto.
+
+P02 · Reserva repetida después de P01
+Entrada: 1, 8, 4, 2, 0, 0
+  Error: La butaca ya esta ocupada.
+  Ingresos totales: Q120
+Resultado: correcto.
+
+P03 · Números fuera de rango después de P01
+Entrada: 1, 0, 1, 21, 1, -1, 4, 2, 0, 0
+  Error: El numero debe estar entre 1 y 20.
+  Ingresos totales: Q120
+El aviso salió tres veces.
+Resultado: correcto.
+
+P04 · Búsqueda por número y por sector
+Entrada: 3, 1, 9, 2, 1, 0, 0
+  Butaca 9 | General | Q35 | Ocupada
+  Butaca 1 | VIP | Q50 | Libre
+  Butaca 8 | VIP | Q50 | Ocupada
+La búsqueda por sector listó las ocho butacas VIP.
+Resultado: correcto.
+
+P05 · Ordenamiento manual después de P01
+Entrada: 4, 3, 0, 0
+  Butaca 9 | General | Q35 | Ocupada
+  Butaca 20 | General | Q35 | Ocupada
+  Butaca 8 | VIP | Q50 | Ocupada
+Resultado: correcto.
+
+P06 · Cancelar una reserva y repetir la cancelación
+Entrada: 2, 9, 2, 9, 4, 2, 0, 0
+  Reserva cancelada. Reembolso Q35.
+  Error: La butaca ya esta libre.
+  Ingresos totales: Q85
+Resultado: correcto.
+
+P07 · Reabrir con cine.txt y sin cine.db después de P06
+Entrada: 4, 2, 0, 0
+  [B8: 1]
+  [B9: 0]
+  [B20: 1]
+  Ingresos totales: Q85
+SQLite se volvió a crear con los mismos estados que el texto.
+Resultado: correcto.
+
+P08 · Reabrir con cine.db y sin cine.txt después de P07
+Entrada: 4, 2, 0, 0
+  [B8: 1]
+  [B9: 0]
+  [B20: 1]
+  Ingresos totales: Q85
+El texto se reconstruyó con los estados guardados en SQLite.
+Resultado: correcto.
+
+P09 · Texto inválido al iniciar
+Entrada: archivo con 1 0 0 2
+  Error: No se pudo cargar cine.txt. Debe contener 20 estados 0 o 1.
+El archivo inválido quedó intacto.
+Resultado: correcto.
+
+P10 · Sala llena y nueva reserva
+Entrada: reservar del 1 al 20, 1, 1, 4, 1, 2, 0, 0
+  Butaca 1 reservada. Sector VIP. Cobro Q50.
+  Butaca 20 reservada. Sector General. Cobro Q35.
+  Error: La butaca ya esta ocupada.
+  VIP (Q50): 0 libres de 8
+  General (Q35): 0 libres de 12
+  Ocupadas: 20 de 20
+  Ingresos totales: Q820
+Resultado: correcto.
+
+P11 · Texto, decimal, valor extra, sector inválido y sala vacía
+Entrada: texto, 1, 8.5, 1, 2 3, 3, 2, 3, 0, 4, 3, 0, 0
+  Error: Ingrese un numero entero.
+  Error: El numero debe estar entre 1 y 2.
+  No hay reservas.
+El aviso de número entero salió tres veces. Se pudo seguir usando el menú.
+Resultado: correcto.
+
+P12 · El archivo temporal no se pudo abrir
+Entrada: 1, 8, 4, 2, 0, 0
+  Error: No se pudo guardar cine.txt. La operacion no se aplico.
+  [B8: 0]
+  Ingresos totales: Q0
+Resultado: correcto.
+
+P13 · SQLite no disponible con texto válido de ejemplo
+Entrada: 1, 2, 4, 2, 0, 0
+  Aviso: cine.txt esta guardado. No se pudo actualizar cine.db.
+  Butaca 2 reservada. Sector VIP. Cobro Q50.
+  Ingresos totales: Q220
+Tras quitar el bloqueo se abrió de nuevo y SQLite se actualizó desde el texto.
+Resultado: correcto.

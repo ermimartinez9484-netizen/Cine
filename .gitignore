@@ -1,0 +1,10 @@
+.idea/
+cmake-build-*/
+build/
+*.exe
+*.o
+/03_CODIGO_FINAL/Cine
+cine.txt
+cine.tmp
+cine.db
+cine.db-*
